@@ -864,6 +864,7 @@ span.kc{cursor:default}
 @keyframes pdfp{0%{box-shadow:0 0 0 0 rgba(140,28,42,.55);transform:scale(1)}50%{transform:scale(1.04)}70%{box-shadow:0 0 0 16px rgba(140,28,42,0)}100%{box-shadow:0 0 0 0 rgba(140,28,42,0);transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.pdfb{animation:none}}
 @media (max-width:860px),(hover:none){.stagebox .stage::after{display:none}}
+@media (max-width:860px){.plc-w{display:none}}
 @media (max-width:860px){.stagebox .zbtns{display:flex;flex-wrap:nowrap;gap:8px;width:100%;justify-content:center}.stagebox .zgrp .ib{padding:6px 14px}.stagebox .zpct{min-width:52px;font-size:.74rem}.stagebox .fsb{padding:8px 12px;font-size:.62rem;letter-spacing:.08em;white-space:nowrap}.pdfb{font-size:.72rem;padding:14px 22px}.stagebox .hlseg button{padding:10px 8px;font-size:.6rem;letter-spacing:.08em}}
 .stagebox.pfs{position:fixed;inset:0;z-index:2000;background:var(--paper,#fbf8f4);overflow:auto;padding:10px;margin:0;max-width:none}
 html.nofl,html.nofl body{overflow:hidden}
@@ -1345,7 +1346,7 @@ const PLACES={otec:[
  ['Березовка','село на Непрядве','Большое село с Успенской церковью: в 1859 году 70 дворов и 620 жителей. Стоит на реке Непрядве — той самой, у впадения которой в Дон прошла Куликовская битва. Отсюда родом Елена Жукова.',S('Наши предки',NP_BZ)],
  ['Куликово поле','≈20 км от Барыковки','8 сентября 1380 года здесь, у впадения Непрядвы в Дон, войско московского князя Дмитрия Ивановича разбило войско Мамая. После битвы князя прозвали Донским. В селе Монастырщино, по преданию, похоронены павшие воины; там жила родня Фокиных. Предки семьи веками пахали землю в двух десятках километров от этого поля.','']
 ]};
-const placesHTML=k=>!PLACES[k]?'':`<div class="kick bk">Места рода</div><div class="plc">${PLACES[k].map(([n,s,t,src])=>`<div class="plc-i"><b>${n}</b><small>${s}</small><p>${t}${src?' '+src:''}</p></div>`).join('')}</div>`;
+const placesHTML=k=>!PLACES[k]?'':`<div class="plc-w"><div class="kick bk">Места рода</div><div class="plc">${PLACES[k].map(([n,s,t,src])=>`<div class="plc-i"><b>${n}</b><small>${s}</small><p>${t}${src?' '+src:''}</p></div>`).join('')}</div></div>`;
 const genHTML=k=>!GENS[k]?'':`<div class="gens"><div class="htt">История по поколениям</div>${GENS[k].map(g=>`<section class="gen"><div class="gen-h"><span class="gen-n">${g.n}</span><div class="gen-t"><b>${g.t}</b><small>${g.y}</small><span class="gen-loc"><svg viewBox="0 0 12 16"><path d="M6 15.5S1 9.6 1 6a5 5 0 0 1 10 0c0 3.6-5 9.5-5 9.5z"/><circle cx="6" cy="6" r="1.8"/></svg>${g.pl}</span></div></div>
  ${g.frags.map(q=>`<div class="gfr">${q.cap?`<div class="kin-cap">${q.cap}</div>`:''}<div class="tv gtv" data-gids="${q.ids.join(' ')}"><div class="sizer"><div class="canvas"></div></div></div></div>`).join('')}
  ${g.st?`<div class="gst">${g.st.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join('')}</div>`:''}
