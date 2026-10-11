@@ -857,8 +857,11 @@ span.kc{cursor:default}
 .rh-b{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px;max-width:none!important}
 .rh-b button{font:600 .72rem var(--f-sans);letter-spacing:.08em;text-transform:uppercase;border-radius:30px;padding:10px 16px;cursor:pointer;border:1px solid var(--red)}
 .rh-fs{background:var(--red);color:#fff}.rh-ok{background:transparent;color:var(--red)}
-@media (max-width:860px) and (orientation:portrait){.rot-hint:not([hidden]){display:flex}.stage:has(.rot-hint:not([hidden])){min-height:380px}}
-@media (max-width:860px){.hero2 .h2a{display:none}.hero2 .h2g{gap:0}}
+a.ib{text-decoration:none;display:inline-flex;align-items:center}
+.stagebox.pfs{position:fixed;inset:0;z-index:2000;background:var(--paper,#fbf8f4);overflow:auto;padding:10px;margin:0;max-width:none}
+html.nofl,html.nofl body{overflow:hidden}
+.stagebox.pfs .surbar{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch}.stagebox.pfs .surbar>*{flex:none}
+@media (max-width:860px){.hero2 .h2a{display:none}.hero2>.fh{display:none}.h2r{white-space:nowrap;letter-spacing:.12em;font-size:.62rem}.h2r span{margin:0 8px}.hero2 .h2g{gap:0}}
 @media (prefers-reduced-motion:reduce){.rot-hint svg{animation:none}}
 
 .cd .t{display:flex;flex-direction:column;align-items:center}.cd .t>.rl{margin-top:auto!important}.cd .t>.rl:last-child{position:relative;top:0}.cd .t>:has(+.rl:last-child){margin-bottom:4px}
@@ -1408,8 +1411,8 @@ document.getElementById('pages').innerHTML=`
   <div class="dwrap"><svg class="dtree" viewBox="0 0 1000 780" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#bgtree"/></svg>
   <div class="tv" id="tv-line"><div class="sizer"><div class="canvas"></div></div></div></div></div></div>
  <div class="blk lines2" id="lines-home"><div class="wrap wide"><div class="bh"><svg class="heart"><use href="#hh"/></svg><h2>Откуда род</h2><p>Где жили предки по линии отца и по линии матери, как заселялись эти места и что говорят документы.</p></div>
-  <div class="seg2" role="tablist" aria-label="Линии семьи">${[['otec','Линия отца','Омская область'],['mat','Линия матери','Тульская область']].map(([k,t,r],i)=>`<button class="sg2" role="tab" aria-selected="${i===0}" data-tab="${k}"><b>${t}</b><small>${r}</small></button>`).join('')}</div>
-  ${['otec','mat'].map((k,i)=>`<div class="tpanel" data-panel="${k}" ${i?'hidden':''}><article class="lcard">
+  <div class="seg2" role="tablist" aria-label="Линии семьи">${[['otec','Линия отца','Омская область'],['mat','Линия матери','Тульская область']].map(([k,t,r],i)=>`<button class="sg2" role="tab" aria-selected="${i===1}" data-tab="${k}"><b>${t}</b><small>${r}</small></button>`).join('')}</div>
+  ${['otec','mat'].map((k,i)=>`<div class="tpanel" data-panel="${k}" ${i?'':'hidden'}><article class="lcard">
    <header class="lhd">${hearts()}<div class="lhd-t"><div class="kick">${k==='otec'?'Линия отца · Омская область':'Линия матери · Тульская область'}</div><h3>${ORIGIN[k].title}</h3><div class="lchips">${REG[k].surn.map(s=>`<span>${s}</span>`).join('')}</div><div class="lgo-w"><a class="lgo" href="#${k}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3v12H4z M12 10a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Фото и история семьи<span>→</span></a></div></div>
     <div class="lhd-s">${LSTATS[k].map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join('')}</div></header>
    <div class="lbody">
@@ -1424,13 +1427,13 @@ document.getElementById('pages').innerHTML=`
       <div class="kick bk">Метрические книги</div><ul class="books">${REG[k].books.map(([t,d,u])=>`<li><a href="${u}" target="_blank" rel="noopener"><b>${t}</b><small>${d}</small></a></li>`).join('')}</ul></aside>
     `}</div></div></article></div>`).join('')}
  </div></div>
- <div class="blk treeblk" id="tree-home"><div class="wrap wide"><div class="bh"><svg class="heart"><use href="#hh"/></svg><h2>Полное древо</h2><p>Все родственники обеих линий, ${STATS[1][0]} поколений. Выделите линию отца или матери, приблизьте или откройте на весь экран.</p></div>
+ <div class="blk treeblk" id="tree-home"><div class="wrap wide"><div class="bh"><svg class="heart"><use href="#hh"/></svg><h2>Полное древо</h2><p>Все родственники обеих линий, ${STATS[1][0]} поколений. Выделите линию отца или матери, приблизьте, откройте на весь экран или в PDF.</p></div>
   <div class="stagebox" id="st-home">
    <div class="vbar"><div class="seg hlseg" role="group" aria-label="Выделить"><button class="on" data-hl="all">Вся семья</button><button data-hl="om">Линия отца</button><button data-hl="tl">Линия матери</button></div>
-    <span class="zbtns"><span class="zgrp"><button class="ib" data-z="out" aria-label="Уменьшить">−</button><span class="zpct" title="Масштаб">100%</span><button class="ib" data-z="in" aria-label="Увеличить">+</button></span><button class="ib" data-z="fs">Во весь экран</button></span></div>
+    <span class="zbtns"><span class="zgrp"><button class="ib" data-z="out" aria-label="Уменьшить">−</button><span class="zpct" title="Масштаб">100%</span><button class="ib" data-z="in" aria-label="Увеличить">+</button></span><button class="ib" data-z="fs">Во весь экран</button><a class="ib pdfb" href="rodoslovnaya-maksimovyh.pdf" target="_blank" rel="noopener">Открыть в PDF</a></span></div>
    <div class="surbar"><span class="kick">Фамилии</span><button class="on" data-sur="">Все</button>${SURN_HTML}</div>
-   <div class="stage"><div class="rot-hint" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="16" y="6" width="16" height="28" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 30a16 16 0 0 0 14 13M36 40l-4 3 4 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Переверните телефон</b><span>Полное древо удобнее смотреть горизонтально: увеличивайте его двумя пальцами и двигайте одним.</span><span class="rh-b"><button type="button" class="rh-fs">Открыть во весь экран</button><button type="button" class="rh-ok">Понятно</button></span></div><div class="tv" data-tv="full"><div class="sizer"><div class="canvas"></div></div></div></div>
-   <p class="thint">Нажмите на древо — и колесо мыши будет его увеличивать; на телефоне переверните экран горизонтально и разводите двумя пальцами. Перетаскивание — прокрутка. Пунктирный круг — имя неизвестно.</p>
+   <div class="stage"><div class="tv" data-tv="full"><div class="sizer"><div class="canvas"></div></div></div></div>
+   <p class="thint">Нажмите на древо — и колесо мыши будет его увеличивать; на телефоне разводите двумя пальцами или нажимайте «+» и «−». Перетаскивание — прокрутка. Пунктирный круг — имя неизвестно.</p>
   </div></div></div>
  <div class="warband" id="war-home"><div class="wrap wide"><div class="wh"><svg class="star"><use href="#star"/></svg><div class="kick">1941 — 1945</div><h2>Война</h2><p class="lead" data-edit="lead.war">Две судьбы тульской линии — и место для историй омской.</p></div>
   ${WAR_HTML}</div></div>
@@ -1508,15 +1511,17 @@ function Stage(box,views){
   const tvOf=v=>box.querySelector(`[data-tv="${v}"]`);
   S.build=()=>{ Object.entries(views).forEach(([v,mk])=>{ S.T[v]=mk(tvOf(v)); }); S.applyHL(); };
   S.cur=()=>S.T[S.view]; S.pct=k=>{ const e=box.querySelector('.zpct'); if(e) e.textContent=Math.round(k*100)+'%'; }; S.tv=()=>tvOf(S.view);
-  S.avail=()=>document.fullscreenElement===box?innerHeight-(innerHeight<500?70:110):(innerHeight<500?Math.max(240,innerHeight-80):Math.max(460,innerHeight-170));
+  S.avail=()=>S.isFS&&S.isFS()?innerHeight-(innerHeight<500?70:110):(innerHeight<500?Math.max(240,innerHeight-80):Math.max(460,innerHeight-170));
   S.fit=()=>{ const tv=S.tv(), T=S.cur(); if(!tv||!T||!tv.clientWidth) return;
-    const k=S.view==='line'?Math.max(.5,Math.min(1,(tv.clientWidth-2)/T.W)):Math.min(1.1,(tv.clientWidth-2)/T.W,S.avail()/T.H);
-    setK(T,k); S.pct(k); const sc=T.W*k>tv.clientWidth+2; tv.classList.toggle('scroll',sc); tv.style.height=T.H*k+(sc?14:0)+'px'; S.fitted=true; };
+    let k=S.view==='line'?Math.max(.5,Math.min(1,(tv.clientWidth-2)/T.W)):Math.min(1.1,(tv.clientWidth-2)/T.W,S.avail()/T.H); const fsm=S.isFS&&S.isFS()&&innerWidth<700&&S.view!=='line'; if(fsm) k=Math.max(k,Math.min(1,(S.avail()-14)/T.H));
+    setK(T,k); S.pct(k); const sc=T.W*k>tv.clientWidth+2; tv.classList.toggle('scroll',sc); tv.style.height=T.H*k+(sc?14:0)+'px'; S.fitted=true; if(fsm&&sc) tv.scrollLeft=(T.W*k-tv.clientWidth)/2; };
   S.zoom=(k,cx,cy)=>{ const tv=S.tv(),T=S.cur(); const r=tv.getBoundingClientRect(); const px=cx==null?tv.clientWidth/2:cx-r.left, py=cy==null?Math.min(tv.clientHeight,S.avail())/2:cy-r.top;
     const sz=T.sizer, offX=Math.max(0,(tv.clientWidth-T.W*T.k)/2); const ox=(tv.scrollLeft+px-offX)/T.k, oy=(tv.scrollTop+py)/T.k; k=Math.max(.2,Math.min(2.2,k)); if(Math.abs(k-T.k)<1e-4) return;
     setK(T,k); S.pct(k); tv.classList.add('scroll'); tv.style.height=Math.max(Math.min(T.H*k+14,S.avail()),Math.min(S.avail(),tv.clientHeight))+'px'; S.fitted=false; const offX2=Math.max(0,(tv.clientWidth-T.W*k)/2); tv.scrollLeft=ox*k+offX2-px; tv.scrollTop=oy*k-py; };
-  S.goFS=()=>{ if(!box.requestFullscreen) return; box.requestFullscreen().then(()=>{ try{ screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{}); }catch(e){} }).catch(()=>{}); };
-  { const rh=box.querySelector('.rot-hint'); if(rh){ let seen=false; try{ seen=sessionStorage.getItem('rotHint')==='1'; }catch(e){} rh.hidden=seen; const hide=()=>{ rh.hidden=true; try{ sessionStorage.setItem('rotHint','1'); }catch(e){} }; rh.querySelector('.rh-ok').onclick=hide; rh.querySelector('.rh-fs').onclick=()=>{ hide(); S.goFS(); }; } }
+  S.isFS=()=>document.fullscreenElement===box||box.classList.contains('pfs');
+  S.goFS=()=>{ if(box.requestFullscreen&&document.fullscreenEnabled){ box.requestFullscreen().catch(()=>{ box.classList.add('pfs'); S.fsBtn(); setTimeout(S.fit,60); }); } else { box.classList.add('pfs'); document.documentElement.classList.add('nofl'); S.fsBtn(); setTimeout(S.fit,60); } };
+  S.exitFS=()=>{ if(document.fullscreenElement) document.exitFullscreen&&document.exitFullscreen(); box.classList.remove('pfs'); document.documentElement.classList.remove('nofl'); S.fsBtn(); setTimeout(S.fit,60); };
+  S.fsBtn=()=>{ const b=box.querySelector('[data-z="fs"]'); if(b) b.textContent=S.isFS()?'Свернуть':'Во весь экран'; };
   S.sur=''; S.applyHL=()=>{ const s0=S.hl==='all'?null:SIDE[S.hl]; const ss=S.sur?withSpouses(new Set(ALL.filter(i=>stemsOf(i).includes(S.sur))),S.sur):null; const s=(s0||ss)?new Set(ALL.filter(i=>(!s0||s0.has(i))&&(!ss||ss.has(i)))):null; Object.values(S.T).forEach(T=>{ if(!T) return;
     const inS=(S0,id)=>S0.has(id)||(BOXK[id]||[]).some(k=>S0.has(k)); T.cv.querySelectorAll('.cd').forEach(n=>{ n.classList.toggle('dim',!!s&&!inS(s,n.dataset.id)); n.classList.toggle('hit',!!ss&&inS(ss,n.dataset.id)); });
     T.cv.querySelectorAll('.wed').forEach(w=>w.classList.toggle('dim',!!s&&!w.dataset.m.split(' ').every(x=>s.has(x)))); T.cv.querySelectorAll('svg path').forEach(p=>{const m=(p.dataset.m||'').split(' ').filter(Boolean); if(p.dataset.p){ const ks0=(p.dataset.ks||'').split(' ').filter(Boolean); p.classList.toggle('dim',!!s&&!(inS(s,p.dataset.p)&&ks0.some(x=>inS(s,x)))); return; } const kk=p.dataset.k, ks=(p.dataset.ks||'').split(' ').filter(Boolean), noKid=!!s&&ks.length&&!ks.some(x=>inS(s,x)); p.classList.toggle('dim',!!s&&(!kk&&noKid?true:kk?!(inS(s,kk)&&m.some(x=>x!==kk&&inS(s,x))):(m.filter(x=>inS(s,x)).length<2&&!m.every(x=>inS(s,x)||D[x][6]))));}); }); };
@@ -1525,8 +1530,8 @@ function Stage(box,views){
   box.querySelectorAll('[data-hl]').forEach(b=>b.onclick=()=>{ box.querySelectorAll('[data-hl]').forEach(x=>x.classList.toggle('on',x===b)); S.hl=b.dataset.hl; S.applyHL(); });
   box.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{ const z=b.dataset.z, T=S.cur();
     if(z==='in') S.zoom(T.k*1.25); else if(z==='out') S.zoom(T.k/1.25); else if(z==='fit') S.fit();
-    else if(z==='fs'){ if(document.fullscreenElement) document.exitFullscreen&&document.exitFullscreen(); else S.goFS(); } });
-  document.addEventListener('fullscreenchange',()=>{ const b=box.querySelector('[data-z="fs"]'); if(b) b.textContent=document.fullscreenElement===box?'Свернуть':'Во весь экран'; setTimeout(S.fit,80); });
+    else if(z==='fs'){ if(S.isFS()) S.exitFS(); else S.goFS(); } });
+  document.addEventListener('fullscreenchange',()=>{ S.fsBtn(); setTimeout(S.fit,80); });
   S.active=false; const setAct=v=>{ S.active=v; box.classList.toggle('zact',v); };
   box.addEventListener('pointerdown',e=>{ if(e.target.closest('.tv')) setAct(true); });
   document.addEventListener('pointerdown',e=>{ if(!box.contains(e.target)) setAct(false); });
