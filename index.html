@@ -857,7 +857,14 @@ span.kc{cursor:default}
 .rh-b{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px;max-width:none!important}
 .rh-b button{font:600 .72rem var(--f-sans);letter-spacing:.08em;text-transform:uppercase;border-radius:30px;padding:10px 16px;cursor:pointer;border:1px solid var(--red)}
 .rh-fs{background:var(--red);color:#fff}.rh-ok{background:transparent;color:var(--red)}
-a.ib{text-decoration:none;display:inline-flex;align-items:center}
+.pdfw{display:flex;justify-content:center;margin:4px 0 22px}
+.pdfb{display:inline-flex;align-items:center;gap:10px;background:var(--red,#8c1c2a);color:#fff;text-decoration:none;font-family:var(--f-sans);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:15px 26px;border-radius:40px;animation:pdfp 1.8s ease-in-out infinite;box-shadow:0 0 0 0 rgba(140,28,42,.55)}
+.pdfb svg{width:20px;height:20px;flex:none}
+.pdfb:hover{filter:brightness(1.1)}
+@keyframes pdfp{0%{box-shadow:0 0 0 0 rgba(140,28,42,.55);transform:scale(1)}50%{transform:scale(1.04)}70%{box-shadow:0 0 0 16px rgba(140,28,42,0)}100%{box-shadow:0 0 0 0 rgba(140,28,42,0);transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.pdfb{animation:none}}
+@media (max-width:860px),(hover:none){.stagebox .stage::after{display:none}}
+@media (max-width:860px){.stagebox .zbtns{display:flex;flex-wrap:nowrap;gap:8px;width:100%;justify-content:center}.stagebox .zgrp .ib{padding:6px 14px}.stagebox .zpct{min-width:52px;font-size:.74rem}.stagebox .fsb{padding:8px 12px;font-size:.62rem;letter-spacing:.08em;white-space:nowrap}.pdfb{font-size:.72rem;padding:14px 22px}.stagebox .hlseg button{padding:10px 8px;font-size:.6rem;letter-spacing:.08em}}
 .stagebox.pfs{position:fixed;inset:0;z-index:2000;background:var(--paper,#fbf8f4);overflow:auto;padding:10px;margin:0;max-width:none}
 html.nofl,html.nofl body{overflow:hidden}
 .stagebox.pfs .surbar{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch}.stagebox.pfs .surbar>*{flex:none}
@@ -1430,7 +1437,8 @@ document.getElementById('pages').innerHTML=`
  <div class="blk treeblk" id="tree-home"><div class="wrap wide"><div class="bh"><svg class="heart"><use href="#hh"/></svg><h2>Полное древо</h2><p>Все родственники обеих линий, ${STATS[1][0]} поколений. Выделите линию отца или матери, приблизьте, откройте на весь экран или в PDF.</p></div>
   <div class="stagebox" id="st-home">
    <div class="vbar"><div class="seg hlseg" role="group" aria-label="Выделить"><button class="on" data-hl="all">Вся семья</button><button data-hl="om">Линия отца</button><button data-hl="tl">Линия матери</button></div>
-    <span class="zbtns"><span class="zgrp"><button class="ib" data-z="out" aria-label="Уменьшить">−</button><span class="zpct" title="Масштаб">100%</span><button class="ib" data-z="in" aria-label="Увеличить">+</button></span><button class="ib" data-z="fs">Во весь экран</button><a class="ib pdfb" href="rodoslovnaya-maksimovyh.pdf" target="_blank" rel="noopener">Открыть в PDF</a></span></div>
+    <span class="zbtns"><span class="zgrp"><button class="ib" data-z="out" aria-label="Уменьшить">−</button><span class="zpct" title="Масштаб">100%</span><button class="ib" data-z="in" aria-label="Увеличить">+</button></span><button class="ib fsb" data-z="fs">Во весь экран</button></span></div>
+   <div class="pdfw"><a class="pdfb" href="rodoslovnaya-maksimovyh.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z M14 2v6h6 M9 13h6 M9 17h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Открыть родословную в PDF</a></div>
    <div class="surbar"><span class="kick">Фамилии</span><button class="on" data-sur="">Все</button>${SURN_HTML}</div>
    <div class="stage"><div class="tv" data-tv="full"><div class="sizer"><div class="canvas"></div></div></div></div>
    <p class="thint">Нажмите на древо — и колесо мыши будет его увеличивать; на телефоне разводите двумя пальцами или нажимайте «+» и «−». Перетаскивание — прокрутка. Пунктирный круг — имя неизвестно.</p>
