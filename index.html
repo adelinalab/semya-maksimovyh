@@ -1304,7 +1304,7 @@ function render(root,ids,o){
     const ph=`<span class="md" style="width:${o.pw}px;height:${o.pw}px">${unk?'<i>?</i>':img(id)}</span>`;
     const tx=unk?`<span class="gn">${d[1]}</span><span class="yr">имя неизвестно</span>`:
       `${o.fio?`<span class="gn fio">${d[0]?`<b>${d[0]}</b> `:''}${d[1]}</span>`:`${d[0]?`<span class="sn">${d[0]}</span>`:''}<span class="gn">${d[1]}</span>`}${d[2]?`<span class="mn">урожд. ${d[2]}</span>`:''}<span class="yr">${yrs(id)}</span>${o.place&&PLACE[id]?`<span class="pl">${PLACE[id]}</span>`:''}${REL[id]?`<span class="rl${REL[id].length>13?' lg':''}${/\s/.test(REL[id])?'':' w1'}">${REL[id]}</span>`:''}`;
-    h+=`<button class="cd ${side} ${unk?'unk':''} ${o.dir&&o.dir.has(id)?'dir':''} ${FAR.has(id)?'far':''}" data-id="${id}" style="left:${p.x}px;top:${p.y}px;width:${p.w}px;font-size:${o.fs}px">${ph}<span class="t">${tx}</span></button>`;});
+    h+=`<button class="cd ${side} ${unk?'unk':''} ${o.dir&&o.dir.has(id)?'dir':''} ${FAR.has(id)||(o.dir&&!o.dir.has(id))?'far':''}" data-id="${id}" style="left:${p.x}px;top:${p.y}px;width:${p.w}px;font-size:${o.fs}px">${ph}<span class="t">${tx}</span></button>`;});
   const R=o.r??10, cy=id=>P[id].y+o.pw/2, half=o.pw/2+7;
   const fams=FAM.map(f=>{const A=P[f.ps[0]],B=f.ps[1]?P[f.ps[1]]:null; let sx,sy,cpl='';
     if(B){const Lc=A.x<B.x?A:B,Rc=A.x<B.x?B:A,y=Math.round(A.y+o.pw/2); cpl=`M${Lc.x+half} ${y}H${Rc.x-half}`; sx=(Lc.x+Rc.x)/2; sy=y; const wd=wedOf(f.ps[0],f.ps[1]); if(wd) h+=`<div class="wed" data-m="${f.ps.join(' ')}" style="left:${sx}px;top:${A.y-3}px" title="Дата венчания">венч. ${wd}</div>`;} else {sx=A.x; sy=A.y+((o.hm&&o.hm[f.ps[0]])||o.ch)+4;}
