@@ -1106,7 +1106,7 @@ const N=[
 // [родитель1, родитель2|null, [дети], смещение шины]
 // Две семьи занимают отдельные блоки; супруги остаются рядом на границе.
 {
- const order=['maria_if','anna_if1','anna_if2','petr_if','ioann_if','tatiana_if','sergey_if','gerasim_if','natalya_gf','tatiana_mw','mikhail_i','praskovya','olga_voronina','katya_voronina','stepan_voronin','unknown_voronin'];
+ const order=['maria_if','anna_if1','anna_if2','petr_if','ioann_if','tatiana_if','sergey_if','gerasim_if','natalya_gf','tatiana_mw','mikhail_i','praskovya','katya_voronina','stepan_voronin','unknown_voronin','olga_voronina'];
  order.forEach((id,i)=>{const n=N.find(n=>n[0]===id);n[1]=11200000+i*200000;n[2]=0;});
  const dmitry=N.find(n=>n[0]==='dmitry_p');dmitry[1]=14600000;dmitry[2]=0;
  for(const [id,x] of [['zina_mf',13000000],['nikolai_m',13400000]]){const n=N.find(n=>n[0]===id);n[1]=x;n[2]=0;}
@@ -1158,7 +1158,7 @@ const name=id=>{const d=D[id]; return d[6]?(d[0]?d[0]+', '+d[1]:d[1]):[d[0],d[1]
    второе слово имени — отчество, оно и становится второй буквой («Матвей Борисов» → МБ) */
 const ini=id=>{const d=D[id]; if(d[6]) return ''; const w=(d[1]||'').split(/\s+/).filter(Boolean);
   return ((d[0]||'')[0]||w[0]&&w[0][0]||'')+(d[0]?((d[1]||'')[0]||''):(w[1]?w[1][0]:''));};
-const img=id=>PH[id]?`<img class="bw" src="${PH[id]}" alt="${name(id)}" loading="lazy">`:`<div class="noph">${ini(id)}</div>`;
+const img=id=>PH[id]?`<img class="bw" src="${PH[id]}" alt="${name(id)}">`:`<div class="noph">${ini(id)}</div>`;
 function yrs(id){const d=D[id]; if(d[6]) return ''; const s=d[3]; if(!s) return 'годы неизвестны';
   if(s.startsWith('род. ')){const v=s.slice(5); const y=parseInt((v.match(/\d{4}/)||['2000'])[0]); return y<1950? v+' — ?' : 'род. '+v;}
   if(!s.includes('—')) return '? — '+s; return s;}
@@ -1266,6 +1266,8 @@ function layout(ids,o){
     if(ivanFamily&&ivanFamily.ks.length)shiftGroup(ivanFamily.ps,kcOf(ivanFamily)-pcOf(ivanFamily),true);
     // Севастьян Жуков находится непосредственно над дочерью Еленой.
     if(it.zhukov_s&&it.elena_f)shiftGroup(['zhukov_s'],it.elena_f.x-it.zhukov_s.x,true);
+    // Ольга Воронина — ровно над дочерью Валентиной
+    if(it.olga_voronina&&it.valentina_nosova){ const d=it.olga_voronina.x-it.valentina_nosova.x; shiftGroup(['valentina_nosova'],d,true); }
     /* Крепостные Фокины: раскладка как в росписи (GFIX.fokiny), блоком над Василием Матвеевичем. Остальное древо не трогаем. */
     if(it.vasily_mf&&it.gerasim_t&&typeof GFIX!=='undefined'){
       const F=GFIX.fokiny, U=(o.w+o.gap)/112;
