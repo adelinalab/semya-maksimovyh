@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.genl{position:absolute;left:18px;width:100px;text-align:left;pointer-events:none}.genl .n{display:block;font-family:var(--f-serif);font-size:1.9rem;line-height:1;color:var(--red)}.genl .y{display:block;font-size:.66rem;font-weight:600;letter-spacing:.12em;color:var(--muted);margin-top:4px;white-space:nowrap}.genl-sep{position:absolute;left:0;height:1px;background:repeating-linear-gradient(90deg,#ddd2c7 0 6px,transparent 6px 12px);pointer-events:none}
+</style></head><body>
 <title>Семья Максимовых</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1207,6 +1208,15 @@ function layout(ids,o){
     famsByRow.slice().reverse().forEach(f=>{ if(f.ks.length<2||f.ps.some(hasPar)) return; const d=kcOf(f)-pcOf(f); if(Math.abs(d)>0.5) shiftGroup(f.ps,d,true); });
     if(o.box) FAM.forEach(f=>{ if(f.ks.length!==1||!o.box[f.ks[0]]) return; const k=f.ks[0], pc=f.ps.reduce((s,p)=>s+it[p].x,0)/f.ps.length; const row=byRow.find(r=>r.includes(k)), i=row.indexOf(k);
       const lo=i>0?it[row[i-1]].x+gapOf(row[i-1],k):-1e9, hi=i<row.length-1?it[row[i+1]].x-gapOf(k,row[i+1]):1e9; if(pc>=lo&&pc<=hi) it[k].x=pc; });
+    /* Крепостные Фокины (ревизии 1782–1858) стоят над линией матери, а не слева от неё. */
+    if(it.vasily_mf&&it.ivan_f&&it.gerasim_t){
+      const SERF=['gerasim_t','praskovya_v','foma_g','marya_ya','kirila_g','avdotya_a','afimya_g','irina_g','boris_f','praskovya_f','elena_fk','anna_fk','petr_fk','afimya_l','nikita_p','fevronya_i','feodosya_p','vasily_borisov','vasilisa_g','lukerya_v','kondraty_v1858','epistimia_1858','wife_v1858','vasily_v1858','maxim_k1858','fekla_k1858','domnika_k1858','matryona_bf','fedor_b','vasilisa_bf','nikolai_b','matvey_f','marfa_mf','marina_b','tatiana_matf','vasily_mf'].filter(i=>it[i]);
+      const d=it.ivan_f.x-it.vasily_mf.x;
+      SERF.forEach(i=>it[i].x+=d);
+      const touched=new Set(SERF.map(i=>it[i].row));
+      byRow.forEach(row=>{ if(!touched.has(it[row[0]].row)) return; row.sort((a,b)=>it[a].x-it[b].x);
+        for(let j=1;j<row.length;j++){ const need=it[row[j-1]].x+gapOf(row[j-1],row[j]); if(it[row[j]].x<need) it[row[j]].x=need; } });
+    }
     // Каждый ребёнок Михаила располагается под своим родительским союзом.
     if(it.mikhail_i&&it.praskovya&&it.nikolai_m){
       const target=(it.mikhail_i.x+it.praskovya.x)/2;
@@ -1259,7 +1269,7 @@ function layout(ids,o){
     if(ivanFamily&&ivanFamily.ks.length)shiftGroup(ivanFamily.ps,kcOf(ivanFamily)-pcOf(ivanFamily),true);
     // Севастьян Жуков находится непосредственно над дочерью Еленой.
     if(it.zhukov_s&&it.elena_f)shiftGroup(['zhukov_s'],it.elena_f.x-it.zhukov_s.x,true);
-    const mn=Math.min(...ids.map(i=>it[i].x-it[i].w/2)); ids.forEach(i=>it[i].x+=o.pad-mn);
+    const mn=Math.min(...ids.map(i=>it[i].x-it[i].w/2)); ids.forEach(i=>it[i].x+=o.pad+(o.padL||0)-mn);
   }
   const P={}; let W=0;
   ids.forEach(id=>{const t=it[id], y=o.top+RI[t.row]*o.step; P[id]={x:t.x,y,w:t.w,mid:y+o.ch/2,bot:y+o.ch}; W=Math.max(W,t.x+t.w/2+o.pad);});
@@ -1416,11 +1426,11 @@ const REG={
 const FS=id=>'https://www.familysearch.org/ark:/61903/1:1:'+id;
 const KN=(n,y,id,dead)=>({n,y,id,dead});
 const GENS={mat:[
- {n:'1',wk:[['Василий Матвеевич','крестьянин-земледелец; до 1861 года — крепостной помещика','по метрике'],['Севастьян Жуков','крестьянин села Березовки','по метрике'],['Евдокия и Параскева','крестьянские дочери: помогали по дому и в поле, пряли, ткали','вероятно']],t:'Начало рода: ревизия и метрики',y:'ок. 1818 — 1911',pl:'Барыковка · Березовка',
-  frags:[{cap:'Ревизия 1816 года: двор Фокы Герасимова',ids:['foma_g','boris_f','praskovya_f','vasilisa_bf','matryona_bf']},{cap:'Ревизия 1850 года: двор Бориса Фокина',ids:['foma_g','boris_f','vasily_borisov','kondraty_v1858','vasily_v1858','matvey_f','marfa_mf','vasily_mf','tatiana_matf']},{cap:'Ревизия 1858 года: семья Матвея Борисова',ids:['marfa_mf','matvey_f','vasilisa_bf','tatiana_matf','vasily_mf','epistimia_1858','kondraty_v1858','vasily_v1858','maxim_k1858','fekla_k1858','domnika_k1858','vasily_borisov']},{cap:'По метрическим книгам: семья Василия Матвеевича Фокина',ids:['vasily_mf','zhukov_s','grigory_vf','evdokia_vf','paraskeva_vf','ivan_f','elena_f']}],
-  st:[['1858','год ревизской сказки'],['40','лет Матвею Борисову'],['13','лет его сыну Василию'],['13 / 10','номер семьи в двух ревизиях']],
+ {n:'1',wk:[['Василий Матвеевич','крестьянин-земледелец; до 1861 года — крепостной помещика','по метрике'],['Севастьян Жуков','крестьянин села Березовки','по метрике'],['Евдокия и Параскева','крестьянские дочери: помогали по дому и в поле, пряли, ткали','вероятно']],t:'Начало рода: ревизии и метрики',y:'ок. 1725 — 1911',pl:'Барыковка · Березовка',
+  frags:[{cap:'Род Фокиных по ревизским сказкам 1782–1858 годов и метрическим книгам',ids:['gerasim_t','praskovya_v','foma_g','marya_ya','kirila_g','avdotya_a','afimya_g','irina_g','boris_f','praskovya_f','elena_fk','anna_fk','petr_fk','afimya_l','nikita_p','fevronya_i','feodosya_p','vasily_borisov','vasilisa_g','lukerya_v','kondraty_v1858','epistimia_1858','maxim_k1858','fekla_k1858','domnika_k1858','vasily_v1858','matryona_bf','fedor_b','vasilisa_bf','nikolai_b','matvey_f','marfa_mf','marina_b','tatiana_matf','vasily_mf','zhukov_s','grigory_vf','evdokia_vf','paraskeva_vf','ivan_f','elena_f']}],
+  st:[['1782','самая ранняя ревизия с двором Герасима'],['6','колен от Герасима до Ивана Фокина'],['41','человек в древе рода'],['Фока','родоначальник фамилии']],
   note:'16 апреля 1858 года в сельце Барыковке Епифанского уезда, во владении Петра Михайловича Глебова, записана семья Матвея Борисова. Имена этого поколения приведены в форме ревизии, без добавленных фамилий. Приблизительные годы рождения рассчитаны по возрастам. Исходный лист и начало сказки проверены на FamilySearch. Позже нашлась сказка от 11 октября 1850 года: в ней записан двор № 13 во главе с Борисом Фокиным — отцом Матвея, и шестилетний сын Матвея Василий.',
-  f:[['16.04.1858','В семье № 13 / 10 записаны <b>Матвей Борисов</b> — 40 лет, жена <b>Марфа</b> — 44, сын <b>Василий</b> — 13, дочь <b>Татьяна</b> — 15, сестра <b>Василиса Борисова</b> — 47. <a href="photos/revision-1858-fokiny.jpg" target="_blank" rel="noopener">Открыть ревизию</a>.'],['1858','Племянник Матвея <b>Кондратий Васильев</b> — 27 лет; его брат <b>Василий Васильев</b> — 25. У Кондратия и Епистимии названы Максим, Фекла и Домника. Пунктир в древе обозначает боковое родство, без предположения о неизвестном отце племянников.'],
+  f:[['1777','В сельце Барыковке умер <b>Герасим Тимофеев</b> — самый ранний известный предок рода. Двор переходит к вдове <b>Прасковье Васильевне</b> и сыновьям Фоке и Кириле.'],['1792','Младшего брата <b>Кирилу Герасимова</b> отдают в рекруты.'],['1833','Умер <b>Фока Герасимов</b> — от его имени пошла фамилия Фокиных; в поздних сказках сын записан «Борис Фомин».'],['1844','Умер <b>Борис Фокин</b>; двор № 13 переходит к сыну Матвею.'],['16.04.1858','В семье № 13 / 10 записаны <b>Матвей Борисов</b> — 40 лет, жена <b>Марфа</b> — 44, сын <b>Василий</b> — 13, дочь <b>Татьяна</b> — 15, сестра <b>Василиса Борисова</b> — 47. <a href="photos/revision-1858-fokiny.jpg" target="_blank" rel="noopener">Открыть ревизию</a>.'],['1858','Племянник Матвея <b>Кондратий Васильев</b> — 27 лет; его брат <b>Василий Васильев</b> — 25. У Кондратия и Епистимии названы Максим, Фекла и Домника. Пунктир в древе обозначает боковое родство, без предположения о неизвестном отце племянников.'],
      ['15.05.1895','Умерла 16-летняя <b>Евдокия</b>, дочь Василия Матвеевича, — «от чахотки», то есть от туберкулёза. Перед смертью её исповедовал и причастил священник Феодор Успенский. '+S('Запись о смерти',FS('XSC2-QK6C'))],
      ['25.06.1897','Через два года в 17 лет умерла её сестра <b>Параскева</b>. Причина в метрике записана, но слово ушло в переплёт книги и не читается. '+S('Запись о смерти',FS('XS8J-C9P3'))+' Дожили до взрослых лет сыновья Иван и Григорий.'],
      ['до 1895','<b>Севастьян Федосеевич Жуков</b> из села Березовки умер, не дождавшись свадьбы дочери Елены.'],
@@ -1664,6 +1674,12 @@ const famLabels=(P,W)=>{const grp=[['om','Дружинины и Енины',['ni
   const R=grp.map(([c,t,ids])=>{const xs=ids.filter(i=>P[i]).map(i=>P[i].x); if(!xs.length) return null; return {c,t,a:Math.min(...xs)-50,b:Math.max(...xs)+50};}).filter(Boolean);
   R.sort((p,q)=>p.a-q.a); for(let i=1;i<R.length;i++) if(R[i].a<R[i-1].b+14){const m=(R[i].a+R[i-1].b)/2; R[i-1].b=m-7; R[i].a=m+7;}
   return R.map(r=>`<div class="famlab ${r.c}" style="left:${r.a}px;width:${r.b-r.a}px;top:10px">${r.t}</div>`).join('');};
+const genLabels=(P,W)=>{ const rows={}; Object.entries(P).forEach(([id,p])=>{ (rows[p.y]=rows[p.y]||[]).push(id); });
+  const ys=Object.keys(rows).map(Number).sort((a,b)=>a-b), RN=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  return ys.map((y,i)=>{ const yrs=rows[y].filter(id=>!D[id][6]).map(id=>{const m=String(D[id][3]).match(/\d{4}/);return m?+m[0]:null;}).filter(Boolean);
+    const rng=yrs.length?(Math.min(...yrs)===Math.max(...yrs)?String(yrs[0]):Math.min(...yrs)+'–'+Math.max(...yrs)):'';
+    const sep=i?`<div class="genl-sep" style="top:${Math.round((ys[i-1]+y)/2+40)}px;width:${W}px"></div>`:'';
+    return sep+`<div class="genl" style="top:${y+22}px"><span class="n">${RN[i]||i+1}</span><span class="y">${rng}</span></div>`; }).join(''); };
 const OPT={w:124,wU:88,pw:72,fs:12,ch:150,top:62,step:230,busGap:24,S:0.000105,gap:12,famGap:40,pad:40,padB:40,labels:[famLabels],r:10,place:false};
 const px=(p,m)=>80+p*400+m*165+(p>=2?70:0), gx=p=>px(p,.5);
 const LINE={grigory_mw:[px(0,0),0],grigory_m:[px(0,1),0],fekla:[px(1,0),0],ivan_n:[px(1,1),0],praskovya:[px(2,0),0],mikhail_i:[px(2,1),0],vasily_p:[px(3,0),0],anna_s:[px(3,1),0],
@@ -1730,7 +1746,7 @@ const LINE_M={fekla:[mx(0),-1],ivan_n:[mx(1),-1],grigory_mw:[mx(1.15),0],grigory
 const lineLabelsM=[(P,W)=>[['om','Линия отца',P.fekla.x-46,P.grigory_m.x+46],['tl','Линия матери',P.vasily_mf.x-46,P.anna_s.x+46]].map(([c,t,a,b])=>`<div class="famlab ${c}" style="left:${a}px;width:${b-a}px;top:4px">${t}</div>`).join('')];
 const LOPT_M={fixed:LINE_M,rowPad:18,w:104,pw:58,fs:12,ch:120,top:30,step:120,busGap:12,pad:14,padB:16,place:false,labels:lineLabelsM,r:10};
 const lineMobile=()=>innerWidth<700;
-const mkFull=tv=>renderT(tv,ALL,Object.assign({},OPT,{dir:DIRALL})), mkLine=tv=>lineMobile()?renderFit(tv,Object.keys(LINE_M),Object.assign({},LOPT_M,{dir:DIRALL})):renderFit(tv,Object.keys(LINE),LOPT);
+const mkFull=tv=>renderT(tv,ALL,Object.assign({},OPT,{dir:DIRALL,padL:120,labels:[famLabels,genLabels]})), mkLine=tv=>lineMobile()?renderFit(tv,Object.keys(LINE_M),Object.assign({},LOPT_M,{dir:DIRALL})):renderFit(tv,Object.keys(LINE),LOPT);
 const STAGES={home:Stage(document.getElementById('st-home'),{full:mkFull}),};
 function fitW(t,max=1,min=0){ const el=t.root; if(!el.clientWidth) return; let k=Math.min(max,(el.clientWidth-2)/t.W); const sc=k<min; if(sc) k=min; setK(t,k); el.style.height=t.H*k+(sc?16:0)+'px'; el.style.overflowX=sc?'auto':'hidden'; }
 const lineT={};
