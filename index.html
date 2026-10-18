@@ -1,4 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.genl{position:absolute;left:18px;width:100px;text-align:left;pointer-events:none}.genl .n{display:block;font-family:var(--f-serif);font-size:1.9rem;line-height:1;color:var(--red)}.genl .y{display:block;font-size:.66rem;font-weight:600;letter-spacing:.12em;color:var(--muted);margin-top:4px;white-space:nowrap}.genl-sep{position:absolute;left:0;height:1px;background:repeating-linear-gradient(90deg,#ddd2c7 0 6px,transparent 6px 12px);pointer-events:none}
+.mnote{position:absolute;background:#fff;border:1.5px solid var(--red);border-left-width:5px;border-radius:10px;padding:12px 16px;font-family:var(--f-sans);font-size:15px;line-height:1.45;color:var(--ink);box-shadow:0 10px 24px -14px rgba(80,20,25,.5);z-index:2}.mnote b{color:var(--red)}.canvas svg.mnote-ln path{stroke:var(--red,#8c1c2a)!important;stroke-width:2!important;stroke-dasharray:5 5!important;opacity:1!important}
+#tree-home .cd.dir .md{box-shadow:0 0 0 4px var(--red,#8c1c2a),0 10px 22px -8px rgba(80,20,25,.45)}.cd.dir.unk .md{border-color:var(--red)!important;border-width:2px!important}
 </style></head><body>
 <title>Семья Максимовых</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1053,7 +1055,7 @@ const D = {
  sergey_if:['Фокин','Сергей Иванович','','род. 04.09.1915','tl','Младший брат Михаила Ивановича. В метрике — Сергий.'],
  ekaterina_gf:['Фокина','Екатерина Арсеньевна','Матвеева','','tl','Жена Григория Васильевича Фокина, родом из деревни Донской прихода села Березовки, дочь крестьянина Арсения Матвеева. Венчались 27 августа 1903 года. В метриках детей записана как «Екатерина Арсеньева».'],
  vasily_gf:['Фокин','Василий Григорьевич','','20.03.1911 — 10.09.1915','tl','Сын Григория и Екатерины Фокиных, двоюродный брат Михаила Ивановича. Умер 10 сентября 1915 года от скарлатины, в четыре года.'],
- matvey_f:['','Матвей Борисов','','ок. 1817 — ?','tl','В ревизии от 16.04.1858 записан как Матвей Борисов, 40 лет; по предыдущей ревизии — 33 года. Отец Василия Матвеевича. Родство записи с нашей ветвью подтверждено семьёй. В сказке 1850 года стоит при отце: «Бориса Фокина другой сын Матвей», 17 лет по предыдущей ревизии и 33 года в 1850-м. Фамилия на листе не приведена.'],
+ matvey_f:['','Матвей Борисов','','ок. 1817 — ?','tl','В ревизии от 16.04.1858 записан как Матвей Борисов, 40 лет; по предыдущей ревизии — 33 года. Отец Василия Матвеевича. Родство записи с нашей ветвью подтверждено семьёй. В сказке 1850 года стоит при отце: «Бориса Фокина другой сын Матвей», 17 лет по предыдущей ревизии и 33 года в 1850-м. Фамилия на листе не приведена. Последний крепостной в роду: после отмены крепостного права в 1861 году получил фамилию Фокин — по имени деда, Фоки Герасимова; с него и началась фамилия Фокиных.'],
  aleksiy_gf:['Фокин','Алексей Григорьевич','','род. 08.02.1906','tl','Старший сын Григория и Екатерины Фокиных, двоюродный брат Михаила Ивановича.'],
  ioann_gf:['Фокин','Иван Григорьевич','','род. 19.05.1908','tl','Сын Григория и Екатерины Фокиных. В метрике — Иоанн.'],
  aleksandr_gf:['Фокин','Александр Григорьевич','','род. 10.08.1913','tl','Сын Григория и Екатерины Фокиных.'],
@@ -1208,15 +1210,6 @@ function layout(ids,o){
     famsByRow.slice().reverse().forEach(f=>{ if(f.ks.length<2||f.ps.some(hasPar)) return; const d=kcOf(f)-pcOf(f); if(Math.abs(d)>0.5) shiftGroup(f.ps,d,true); });
     if(o.box) FAM.forEach(f=>{ if(f.ks.length!==1||!o.box[f.ks[0]]) return; const k=f.ks[0], pc=f.ps.reduce((s,p)=>s+it[p].x,0)/f.ps.length; const row=byRow.find(r=>r.includes(k)), i=row.indexOf(k);
       const lo=i>0?it[row[i-1]].x+gapOf(row[i-1],k):-1e9, hi=i<row.length-1?it[row[i+1]].x-gapOf(k,row[i+1]):1e9; if(pc>=lo&&pc<=hi) it[k].x=pc; });
-    /* Крепостные Фокины (ревизии 1782–1858) стоят над линией матери, а не слева от неё. */
-    if(it.vasily_mf&&it.ivan_f&&it.gerasim_t){
-      const SERF=['gerasim_t','praskovya_v','foma_g','marya_ya','kirila_g','avdotya_a','afimya_g','irina_g','boris_f','praskovya_f','elena_fk','anna_fk','petr_fk','afimya_l','nikita_p','fevronya_i','feodosya_p','vasily_borisov','vasilisa_g','lukerya_v','kondraty_v1858','epistimia_1858','wife_v1858','vasily_v1858','maxim_k1858','fekla_k1858','domnika_k1858','matryona_bf','fedor_b','vasilisa_bf','nikolai_b','matvey_f','marfa_mf','marina_b','tatiana_matf','vasily_mf'].filter(i=>it[i]);
-      const d=it.ivan_f.x-it.vasily_mf.x;
-      SERF.forEach(i=>it[i].x+=d);
-      const touched=new Set(SERF.map(i=>it[i].row));
-      byRow.forEach(row=>{ if(!touched.has(it[row[0]].row)) return; row.sort((a,b)=>it[a].x-it[b].x);
-        for(let j=1;j<row.length;j++){ const need=it[row[j-1]].x+gapOf(row[j-1],row[j]); if(it[row[j]].x<need) it[row[j]].x=need; } });
-    }
     // Каждый ребёнок Михаила располагается под своим родительским союзом.
     if(it.mikhail_i&&it.praskovya&&it.nikolai_m){
       const target=(it.mikhail_i.x+it.praskovya.x)/2;
@@ -1269,6 +1262,21 @@ function layout(ids,o){
     if(ivanFamily&&ivanFamily.ks.length)shiftGroup(ivanFamily.ps,kcOf(ivanFamily)-pcOf(ivanFamily),true);
     // Севастьян Жуков находится непосредственно над дочерью Еленой.
     if(it.zhukov_s&&it.elena_f)shiftGroup(['zhukov_s'],it.elena_f.x-it.zhukov_s.x,true);
+    /* Крепостные Фокины (ревизии 1782–1858) стоят над линией матери, а не слева от неё. */
+    if(it.vasily_mf&&it.ivan_f&&it.gerasim_t){
+      const SERF=['gerasim_t','praskovya_v','foma_g','marya_ya','kirila_g','avdotya_a','afimya_g','irina_g','boris_f','praskovya_f','elena_fk','anna_fk','petr_fk','afimya_l','nikita_p','fevronya_i','feodosya_p','vasily_borisov','vasilisa_g','lukerya_v','kondraty_v1858','epistimia_1858','wife_v1858','vasily_v1858','maxim_k1858','fekla_k1858','domnika_k1858','matryona_bf','fedor_b','vasilisa_bf','nikolai_b','matvey_f','marfa_mf','marina_b','tatiana_matf','vasily_mf'].filter(i=>it[i]);
+      const famOf=(a,b)=>FAM.find(f=>f.ps.includes(a)&&(!b||f.ps.includes(b))&&f.ks.length);
+      const kc=f=>{const xs=f.ks.map(k=>it[k].x);return (Math.min(...xs)+Math.max(...xs))/2;};
+      /* Иван и Елена — над своими детьми (Михаил Иванович и его сёстры, братья) */
+      const fi=famOf('ivan_f','elena_f'); let dI=0; if(fi){ dI=(it.mikhail_i?it.mikhail_i.x:kc(fi))-(it.ivan_f.x+it.elena_f.x)/2; ['ivan_f','elena_f','zhukov_s'].forEach(i=>it[i]&&(it[i].x+=dI)); }
+      /* Григорий Васильевич с женой — над своими детьми */
+      const fg=famOf('grigory_vf','ekaterina_gf'); if(fg){ const dg=kc(fg)-(it.grigory_vf.x+it.ekaterina_gf.x)/2; ['grigory_vf','ekaterina_gf'].forEach(i=>it[i].x+=dg); }
+      const d=it.ivan_f.x-it.vasily_mf.x;
+      SERF.forEach(i=>it[i].x+=d);
+      const touched=new Set(SERF.concat(['ivan_f','elena_f','zhukov_s','grigory_vf','ekaterina_gf']).filter(i=>it[i]).map(i=>it[i].row));
+      byRow.forEach(row=>{ if(!touched.has(it[row[0]].row)) return; row.sort((a,b)=>it[a].x-it[b].x);
+        for(let j=1;j<row.length;j++){ const need=it[row[j-1]].x+gapOf(row[j-1],row[j]); if(it[row[j]].x<need) it[row[j]].x=need; } });
+    }
     const mn=Math.min(...ids.map(i=>it[i].x-it[i].w/2)); ids.forEach(i=>it[i].x+=o.pad+(o.padL||0)-mn);
   }
   const P={}; let W=0;
@@ -1680,6 +1688,10 @@ const genLabels=(P,W)=>{ const rows={}; Object.entries(P).forEach(([id,p])=>{ (r
     const rng=yrs.length?(Math.min(...yrs)===Math.max(...yrs)?String(yrs[0]):Math.min(...yrs)+'–'+Math.max(...yrs)):'';
     const sep=i?`<div class="genl-sep" style="top:${Math.round((ys[i-1]+y)/2+40)}px;width:${W}px"></div>`:'';
     return sep+`<div class="genl" style="top:${y+22}px"><span class="n">${RN[i]||i+1}</span><span class="y">${rng}</span></div>`; }).join(''); };
+const matveyNote=(P,W)=>{ const m=P.matvey_f; if(!m) return ''; const row=Object.values(P).filter(p=>p.y===m.y); const left=Math.min(...row.map(p=>p.x-p.w/2));
+  const bw=430, bx=left-bw-60, by=m.y+6; if(bx<130) return ''; const ly=m.y-30, cx=m.x;
+  return `<svg class="mnote-ln" style="position:absolute;left:0;top:0;overflow:visible;pointer-events:none" width="1" height="1"><path d="M${bx+bw} ${by+18}H${bx+bw+24}V${ly}H${cx}V${m.y-4}" fill="none" stroke="#8c1c2a" stroke-width="2" stroke-dasharray="5 5"/><circle cx="${cx}" cy="${m.y-4}" r="4" fill="#8c1c2a"/></svg>`+
+   `<div class="mnote" style="left:${bx}px;top:${by}px;width:${bw}px"><b>Матвей Борисов — последний крепостной в роду.</b> После отмены крепостного права в 1861 году получил фамилию <b>Фокин</b> — по имени деда, Фоки Герасимова. С него и началась фамилия Фокиных.</div>`; };
 const OPT={w:124,wU:88,pw:72,fs:12,ch:150,top:62,step:230,busGap:24,S:0.000105,gap:12,famGap:40,pad:40,padB:40,labels:[famLabels],r:10,place:false};
 const px=(p,m)=>80+p*400+m*165+(p>=2?70:0), gx=p=>px(p,.5);
 const LINE={grigory_mw:[px(0,0),0],grigory_m:[px(0,1),0],fekla:[px(1,0),0],ivan_n:[px(1,1),0],praskovya:[px(2,0),0],mikhail_i:[px(2,1),0],vasily_p:[px(3,0),0],anna_s:[px(3,1),0],
@@ -1746,7 +1758,7 @@ const LINE_M={fekla:[mx(0),-1],ivan_n:[mx(1),-1],grigory_mw:[mx(1.15),0],grigory
 const lineLabelsM=[(P,W)=>[['om','Линия отца',P.fekla.x-46,P.grigory_m.x+46],['tl','Линия матери',P.vasily_mf.x-46,P.anna_s.x+46]].map(([c,t,a,b])=>`<div class="famlab ${c}" style="left:${a}px;width:${b-a}px;top:4px">${t}</div>`).join('')];
 const LOPT_M={fixed:LINE_M,rowPad:18,w:104,pw:58,fs:12,ch:120,top:30,step:120,busGap:12,pad:14,padB:16,place:false,labels:lineLabelsM,r:10};
 const lineMobile=()=>innerWidth<700;
-const mkFull=tv=>renderT(tv,ALL,Object.assign({},OPT,{dir:DIRALL,padL:120,labels:[famLabels,genLabels]})), mkLine=tv=>lineMobile()?renderFit(tv,Object.keys(LINE_M),Object.assign({},LOPT_M,{dir:DIRALL})):renderFit(tv,Object.keys(LINE),LOPT);
+const mkFull=tv=>renderT(tv,ALL,Object.assign({},OPT,{dir:DIRALL,padL:120,labels:[famLabels,genLabels,matveyNote]})), mkLine=tv=>lineMobile()?renderFit(tv,Object.keys(LINE_M),Object.assign({},LOPT_M,{dir:DIRALL})):renderFit(tv,Object.keys(LINE),LOPT);
 const STAGES={home:Stage(document.getElementById('st-home'),{full:mkFull}),};
 function fitW(t,max=1,min=0){ const el=t.root; if(!el.clientWidth) return; let k=Math.min(max,(el.clientWidth-2)/t.W); const sc=k<min; if(sc) k=min; setK(t,k); el.style.height=t.H*k+(sc?16:0)+'px'; el.style.overflowX=sc?'auto':'hidden'; }
 const lineT={};
