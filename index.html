@@ -1706,6 +1706,8 @@ const matveyNote=(P,W,BW,PW)=>{ const m=P.matvey_f; if(!m) return ''; const row=
   const body=`<div class="mnote-k"><span class="mnote-no">1</span>Начало фамилии</div><div class="mnote-h">Матвей Борисов</div><div class="mnote-s">последний крепостной в роду</div><p>После отмены крепостного права в&nbsp;1861&nbsp;году получил фамилию <b>Фокин</b> — по имени деда, Фоки Герасимова. С него и началась фамилия Фокиных.</p>`;
   if(inline){ const cy=m.y+PW/2, rx=Math.max(...row.map(p=>p.x+p.w/2))+26; return `<div class="mnote inl r" style="left:${rx}px;top:${cy}px;width:${bw}px">${body}</div>`; }
   return `<div class="mnote" style="left:${bx}px;top:${m.y-6}px;width:${bw}px">${body}</div><span class="mnote-mk" style="left:${m.x+18}px;top:${m.y-8}px">1</span>`; };
+const fokaNote=(P,W,BW,PW)=>{ const f=P.foma_g; if(!f) return ''; const bw=BW||360, cy=f.y+PW/2, rx=f.x-f.w/2-26-bw; if(rx<10) return '';
+  return `<div class="mnote inl" style="left:${rx}px;top:${cy}px;width:${bw}px"><div class="mnote-k">Начало рода</div><div class="mnote-h">Фока Герасимов</div><div class="mnote-s">с него начался род Фокиных</div><p>Крепостной крестьянин сельца Барыковки (ок.&nbsp;1758&nbsp;—&nbsp;1833). Его имя стало фамилией всего рода: внук Фоки, <b>Матвей Борисов</b>, последний крепостной в семье, после отмены крепостного права в&nbsp;1861&nbsp;году первым записался <b>Фокиным</b> — по имени деда.</p></div>`; };
 const OPT={w:124,wU:88,pw:72,fs:12,ch:150,top:62,step:230,busGap:24,S:0.000105,gap:12,famGap:40,pad:40,padB:40,labels:[famLabels],r:10,place:false};
 const px=(p,m)=>80+p*400+m*165+(p>=2?70:0), gx=p=>px(p,.5);
 const LINE={grigory_mw:[px(0,0),0],grigory_m:[px(0,1),0],fekla:[px(1,0),0],ivan_n:[px(1,1),0],praskovya:[px(2,0),0],mikhail_i:[px(2,1),0],vasily_p:[px(3,0)+117,0],anna_s:[px(3,0)+447,0],
@@ -1715,7 +1717,7 @@ const LINE={grigory_mw:[px(0,0),0],grigory_m:[px(0,1),0],fekla:[px(1,0),0],ivan_
   aleksandr_g:[gx(0),1],lyudmila_i:[gx(1),1],nikolai_m:[gx(2),1],maria_v:[gx(3),1],
   viktor:[(gx(0)+gx(1))/2,2],tatiana:[(gx(2)+gx(3))/2,2],irina:[(gx(1)+gx(2))/2-185,3],galina:[(gx(1)+gx(2))/2,3],roman:[(gx(1)+gx(2))/2+185,3]};
 const lineLabels=[(P,W)=>[['om','Линия отца · Омская область',P.grigory_mw.x-70,P.ivan_n.x+70],['tl','Линия матери · Тульская область',P.praskovya.x-70,P.darya.x+70]].map(([c,t,a,b])=>`<div class="famlab ${c}" style="left:${a}px;width:${b-a}px;top:6px">${t}</div>`).join('')];
-const LOPT={fixed:LINE,w:158,pw:104,fs:15,ch:200,top:52,step:280,busGap:34,pad:24,padB:30,place:false,labels:[...lineLabels,(P,W)=>matveyNote(P,W,360,104)],r:14};
+const LOPT={fixed:LINE,w:158,pw:104,fs:15,ch:200,top:52,step:280,busGap:34,pad:24,padB:30,place:false,labels:[...lineLabels,(P,W)=>fokaNote(P,W,360,104)],r:14};
 const SIDE={om:new Set(ALL.filter(i=>D[i][4]==='om')), tl:new Set(ALL.filter(i=>D[i][4]==='tl'||BOTH.has(i)))};
 
 /* фильтр фамилии: члены семьи + их супруги (жёны/мужья с другой фамилией тоже) */
