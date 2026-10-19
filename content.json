@@ -1,1 +1,35 @@
-{"texts":{},"photos":{"cherlak":"photos/cherlak-family.jpg"}}
+{
+  "texts": {
+    "cap.fokin_children": "Дети Марии и Николая Фокиных",
+    "cap.kids": "Семейный снимок: Виктор Максимов с детьми",
+    "cap.twins": "Ирина и Галина Максимовы с Анной Сарычевой",
+    "cap.parents": "Максимовы с мамой",
+    "cap.now": "Максимовы с бабушкой и дедушкой",
+    "cap.kamenka": "Николай Фокин слева, Иван Аксёнов справа",
+    "cap.anna_dochki": "Николай Фокин и Анна Сарычева",
+    "cap.tula_rod": "Свадьба Фокиной и Нефедова",
+    "cap.wed_vt": "Свадьба Виктора Максимова и Татьяны Фокиной",
+    "cap.barykovka": "Фокины в Барыковке",
+    "cap.fokiny": "Семья Фокиных",
+    "cap.moskovka_family": "Максимовы в Московке",
+    "cap.viktor_kid": "Виктор и Александр Максимовы"
+  },
+  "photos": {
+    "cherlak": "photos/cherlak-family.jpg",
+    "war_sar": "photos/pavel-sarychev.png",
+    "fokin_children": "photos/family-fokin_children.jpg",
+    "kids": "photos/family-kids.jpg",
+    "twins": "photos/family-twins.jpg",
+    "parents": "photos/family-parents.jpg",
+    "now": "photos/family-now.jpg",
+    "kamenka": "photos/family-kamenka.jpg",
+    "anna_dochki": "photos/family-anna_dochki.jpg",
+    "tula_rod": "photos/family-tula_rod.jpg",
+    "wed_vt": "photos/family-wed_vt.jpg",
+    "barykovka": "photos/family-barykovka.jpg",
+    "fokiny": "photos/family-fokiny.jpg",
+    "moskovka_family": "photos/family-moskovka_family.jpg",
+    "viktor_kid": "photos/family-viktor_kid.jpg",
+    "revision1858": "photos/revision-1858-fokiny.jpg"
+  }
+}
